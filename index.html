@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empire Promos</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        ::selection {
+            background: rgba(201, 168, 76, 0.3);
+            color: #fff;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #0d0d0d 0%, #080808 50%, #0a0a0a 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ══════ Ambient Background Glow ══════ */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(
+                circle,
+                rgba(201, 168, 76, 0.04) 0%,
+                rgba(201, 168, 76, 0.015) 35%,
+                transparent 65%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ══════ Noise Grain Overlay ══════ */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            opacity: 0.02;
+            background: repeating-conic-gradient(
+                #ffffff 0% 25%, transparent 0% 50%
+            ) 0 0 / 2px 2px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ══════ Container ══════ */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            padding: 24px;
+            width: 100%;
+        }
+
+        /* ══════ Crown ══════ */
+        .crown-wrapper {
+            position: relative;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeInDown 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.3s;
+        }
+
+        .crown {
+            font-size: 54px;
+            position: relative;
+            z-index: 2;
+            line-height: 1;
+        }
+
+        .crown-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(
+                circle,
+                rgba(201, 168, 76, 0.22) 0%,
+                rgba(201, 168, 76, 0.06) 45%,
+                transparent 70%
+            );
+            border-radius: 50%;
+            z-index: 1;
+            animation: pulseGlow 3.5s ease-in-out infinite;
+        }
+
+        .crown-glow-outer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(
+                circle,
+                rgba(201, 168, 76, 0.06) 0%,
+                transparent 60%
+            );
+            border-radius: 50%;
+            z-index: 0;
+            animation: pulseGlow 3.5s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+
+        /* ══════ Title ══════ */
+        .title {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            background: linear-gradient(
+                135deg,
+                #FFFFFF 0%,
+                #F5E6C8 40%,
+                #FFFFFF 80%
+            );
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       shimmer 8s ease-in-out infinite;
+            animation-delay: 0.6s, 2s;
+        }
+
+        /* ══════ Divider ══════ */
+        .divider {
+            width: 36px;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(201, 168, 76, 0.5) 50%,
+                transparent 100%
+            );
+            margin-bottom: 18px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.85s;
+        }
+
+        /* ══════ Subtitle ══════ */
+        .subtitle {
+            font-size: 12px;
+            font-weight: 300;
+            color: #555555;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 48px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1s;
+        }
+
+        /* ══════ Buttons Container ══════ */
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+            max-width: 330px;
+        }
+
+        /* ══════ Button ══════ */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 24px;
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 12px;
+            background: rgba(201, 168, 76, 0.02);
+            color: rgba(224, 213, 192, 0.85);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1.8px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .btn:nth-child(1) {
+            animation-delay: 1.2s;
+        }
+
+        .btn:nth-child(2) {
+            animation-delay: 1.4s;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(201, 168, 76, 0.06) 0%,
+                rgba(201, 168, 76, 0.01) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: inherit;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(201, 168, 76, 0.04),
+                transparent
+            );
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover {
+            border-color: rgba(201, 168, 76, 0.45);
+            box-shadow:
+                0 0 15px rgba(201, 168, 76, 0.06),
+                0 0 30px rgba(201, 168, 76, 0.03),
+                inset 0 0 15px rgba(201, 168, 76, 0.02);
+            transform: translateY(-1px);
+            color: rgba(240, 230, 210, 1);
+        }
+
+        .btn:hover::before {
+            opacity: 1;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(0.995);
+            transition: transform 0.1s ease;
+        }
+
+        /* ══════ Button Icon ══════ */
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-icon svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0.7;
+        }
+
+        .btn:hover .btn-icon svg {
+            transform: scale(1.12);
+            opacity: 1;
+        }
+
+        .btn-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ══════ Footer ══════ */
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-weight: 300;
+            color: #1a1a1a;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1.2s ease forwards;
+            animation-delay: 2s;
+            white-space: nowrap;
+        }
+
+        /* ══════ Animations ══════ */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.12);
+            }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* ══════ Responsive ══════ */
+        @media (max-width: 480px) {
+            .crown {
+                font-size: 46px;
+            }
+            .crown-glow {
+                width: 85px;
+                height: 85px;
+            }
+            .crown-glow-outer {
+                width: 120px;
+                height: 120px;
+            }
+            .crown-wrapper {
+                margin-bottom: 28px;
+            }
+            .title {
+                font-size: 21px;
+                letter-spacing: 5px;
+            }
+            .subtitle {
+                font-size: 11px;
+                letter-spacing: 2px;
+                margin-bottom: 40px;
+            }
+            .buttons {
+                max-width: 300px;
+            }
+            .btn {
+                padding: 14px 20px;
+                font-size: 11px;
+                letter-spacing: 1.4px;
+                gap: 8px;
+            }
+            .btn-icon svg {
+                width: 15px;
+                height: 15px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .title {
+                font-size: 18px;
+                letter-spacing: 4px;
+            }
+            .subtitle {
+                font-size: 10px;
+                letter-spacing: 1.8px;
+            }
+            .buttons {
+                max-width: 270px;
+            }
+            .btn {
+                padding: 13px 16px;
+                font-size: 10px;
+                letter-spacing: 1.2px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .crown {
+                font-size: 62px;
+            }
+            .crown-glow {
+                width: 110px;
+                height: 110px;
+            }
+            .title {
+                font-size: 30px;
+                letter-spacing: 9px;
+            }
+            .subtitle {
+                font-size: 13px;
+                letter-spacing: 3px;
+            }
+            .buttons {
+                max-width: 360px;
+            }
+            .btn {
+                padding: 16px 28px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="crown-wrapper">
+            <div class="crown-glow-outer"></div>
+            <div class="crown-glow"></div>
+            <div class="crown">👑</div>
+        </div>
+
+        <h1 class="title">Empire Promos</h1>
+
+        <div class="divider"></div>
+
+        <p class="subtitle">As melhores promoções em um só lugar</p>
+
+        <div class="buttons">
+            <a href="https://t.me/empire_promos"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="btn">
+                <span class="btn-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Empire Promos — Geral</span>
+            </a>
+
+            <a href="https://t.me/ofertaspromos01"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="btn">
+                <span class="btn-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Empire Promos — Hardware</span>
+            </a>
+        </div>
+
+    </div>
+
+    <footer class="footer">© 2025 Empire Promos</footer>
+
+</body>
+</html>
